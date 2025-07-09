@@ -1,15 +1,332 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Git Test</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>USD 3D Model Viewer</title>
+
+        <!-- Bootstrap CSS -->
         <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
             rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css"
         />
+        <!-- Bootstrap Icons -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+            rel="stylesheet"
+        />
+        <!-- AOS CSS for animation -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css"
+            rel="stylesheet"
+        />
+        <!-- Model Viewer polyfill (needed for some browsers) -->
+        <script
+            type="module"
+            src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer.min.js"
+        ></script>
+
+        <style>
+            /* Bootstrap-only approach but minimal added for hover scale */
+            .model-card:hover {
+                transform: scale(1.03);
+                transition: transform 0.3s ease;
+                z-index: 2;
+            }
+            model-viewer {
+                width: 100%;
+                height: 300px;
+                border-radius: 0.375rem; /* rounded */
+                background-color: #111;
+                box-shadow: 0 0 15px rgba(0, 123, 255, 0.7);
+            }
+        </style>
     </head>
-    <body>
-        <h1>This is Git test.</h1>
+    <body class="bg-black text-light">
+        <!-- Navbar -->
+        <nav
+            class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-info shadow-sm"
+        >
+            <div class="container">
+                <a class="navbar-brand fw-bold text-info" href="#">
+                    <i class="bi bi-cpu"></i> USD Viewer
+                </a>
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div
+                    class="collapse navbar-collapse justify-content-end"
+                    id="navbarNav"
+                >
+                    <ul class="navbar-nav align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#features"
+                                ><i class="bi bi-gear-wide-connected"></i>
+                                Features</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#samples"
+                                ><i class="bi bi-collection"></i> Samples</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#docs"
+                                ><i class="bi bi-file-earmark-code"></i> USD
+                                Docs</a
+                            >
+                        </li>
+                        <li class="nav-item ps-3">
+                            <!-- Dark Mode Toggle -->
+                            <button
+                                id="themeToggle"
+                                class="btn btn-outline-info btn-sm"
+                                aria-label="Toggle Light/Dark Mode"
+                            >
+                                <i class="bi bi-moon-fill"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <header class="container py-5 text-center">
+            <h1 class="display-3 fw-bold text-info mb-3">
+                View USD 3D Models Online
+            </h1>
+            <p class="fs-5 text-light">
+                Seamlessly render and interact with USD format 3D models
+                directly in your browser.
+            </p>
+            <a
+                href="#samples"
+                class="btn btn-outline-info btn-lg mt-3 fw-semibold"
+            >
+                Explore Sample Models
+                <i class="bi bi-arrow-down-circle ms-2"></i>
+            </a>
+        </header>
+
+        <!-- Features Section -->
+        <section
+            class="container py-5"
+            id="features"
+            data-aos="fade-up"
+            data-aos-duration="1000"
+        >
+            <h2 class="fw-bold text-info mb-4">Features</h2>
+            <ul class="list-group list-group-flush fs-5 text-light">
+                <li class="list-group-item bg-dark border-info mb-2 rounded">
+                    <i class="bi bi-check-circle-fill text-info me-2"></i>
+                    Supports USD format for 3D models
+                </li>
+                <li class="list-group-item bg-dark border-info mb-2 rounded">
+                    <i class="bi bi-check-circle-fill text-info me-2"></i>
+                    Online interactive rendering view supported
+                </li>
+                <li class="list-group-item bg-dark border-info mb-2 rounded">
+                    <i class="bi bi-check-circle-fill text-info me-2"></i> Easy
+                    to use and lightweight web app
+                </li>
+                <li class="list-group-item bg-dark border-info mb-2 rounded">
+                    <i class="bi bi-check-circle-fill text-info me-2"></i> No
+                    installation required, works on all modern browsers
+                </li>
+            </ul>
+        </section>
+
+        <!-- Sample Models with embedded USDZ viewer -->
+        <section class="container py-5" id="samples">
+            <div
+                class="text-center mb-5"
+                data-aos="fade-up"
+                data-aos-duration="1000"
+            >
+                <h2 class="fw-bold text-info display-5">Sample USD Models</h2>
+                <p class="text-light fs-5">
+                    Experience interactive 3D USD models seamlessly rendered in
+                    your browser.
+                </p>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <!-- Robot Arm -->
+                <div
+                    class="col-md-4"
+                    data-aos="fade-up"
+                    data-aos-delay="100"
+                    data-aos-duration="1000"
+                >
+                    <div
+                        class="card bg-dark border-info shadow-lg h-100 model-card"
+                    >
+                        <model-viewer
+                            src="https://modelviewer.dev/shared-assets/models/RobotExpressive.glb"
+                            alt="Robot Arm Model"
+                            camera-controls
+                            ar
+                            ar-modes="webxr scene-viewer quick-look"
+                            interaction-prompt="auto"
+                            loading="lazy"
+                        >
+                        </model-viewer>
+                        <div class="card-body text-light d-flex flex-column">
+                            <h5 class="card-title">🤖 Robot Arm</h5>
+                            <p class="card-text text-info flex-grow-1">
+                                A detailed USD model of a mechanical robot arm,
+                                perfect for automation demos.
+                            </p>
+                            <a
+                                href="https://graphics.pixar.com/usd/downloads/usd_sample_robot.usd"
+                                target="_blank"
+                                class="btn btn-outline-info fw-semibold mt-auto"
+                            >
+                                View USD File
+                                <i class="bi bi-box-arrow-up-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Car Model -->
+                <div
+                    class="col-md-4"
+                    data-aos="fade-up"
+                    data-aos-delay="200"
+                    data-aos-duration="1000"
+                >
+                    <div
+                        class="card bg-dark border-info shadow-lg h-100 model-card"
+                    >
+                        <model-viewer
+                            src="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/Avocado/glTF-Binary/Avocado.glb"
+                            alt="Car Model"
+                            camera-controls
+                            ar
+                            ar-modes="webxr scene-viewer quick-look"
+                            interaction-prompt="auto"
+                            loading="lazy"
+                        >
+                        </model-viewer>
+                        <div class="card-body text-light d-flex flex-column">
+                            <h5 class="card-title">🚗 Car Model</h5>
+                            <p class="card-text text-info flex-grow-1">
+                                A sleek car USD model demonstrating advanced
+                                material and texture mapping.
+                            </p>
+                            <a
+                                href="https://graphics.pixar.com/usd/downloads/usd_sample_car.usd"
+                                target="_blank"
+                                class="btn btn-outline-info fw-semibold mt-auto"
+                            >
+                                View USD File
+                                <i class="bi bi-box-arrow-up-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lamp Post -->
+                <div
+                    class="col-md-4"
+                    data-aos="fade-up"
+                    data-aos-delay="300"
+                    data-aos-duration="1000"
+                >
+                    <div
+                        class="card bg-dark border-info shadow-lg h-100 model-card"
+                    >
+                        <model-viewer
+                            src="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/Lantern/glTF-Binary/Lantern.glb"
+                            alt="Lamp Post Model"
+                            camera-controls
+                            ar
+                            ar-modes="webxr scene-viewer quick-look"
+                            interaction-prompt="auto"
+                            loading="lazy"
+                        >
+                        </model-viewer>
+                        <div class="card-body text-light d-flex flex-column">
+                            <h5 class="card-title">💡 Lamp Post</h5>
+                            <p class="card-text text-info flex-grow-1">
+                                Urban lamp post model in USD format, ideal for
+                                cityscape visualizations.
+                            </p>
+                            <a
+                                href="https://graphics.pixar.com/usd/downloads/usd_sample_lamppost.usd"
+                                target="_blank"
+                                class="btn btn-outline-info fw-semibold mt-auto"
+                            >
+                                View USD File
+                                <i class="bi bi-box-arrow-up-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- USD Documentation -->
+        <section
+            class="container py-5"
+            id="docs"
+            data-aos="fade-up"
+            data-aos-duration="1000"
+        >
+            <h2 class="fw-bold text-info mb-4">USD Documentation</h2>
+            <p class="fs-5 text-light mb-3">
+                For detailed specifications and tutorials, visit the
+                <a
+                    href="https://graphics.pixar.com/usd/docs/index.html"
+                    target="_blank"
+                    class="text-info fw-semibold text-decoration-underline"
+                >
+                    USD Official Documentation </a
+                >.
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-dark border-top border-info text-center py-4 mt-auto">
+            <p class="mb-0 text-info small">
+                &copy; 2025 USD 3D Model Viewer. All rights reserved.
+            </p>
+        </footer>
+
+        <!-- Bootstrap JS Bundle -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- AOS JS -->
+        <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+        <script>
+            AOS.init();
+
+            // Light/dark toggle
+            const toggleBtn = document.getElementById("themeToggle");
+            const htmlEl = document.documentElement;
+            toggleBtn.addEventListener("click", () => {
+                const currentTheme = htmlEl.getAttribute("data-bs-theme");
+                if (currentTheme === "dark") {
+                    htmlEl.setAttribute("data-bs-theme", "light");
+                    document.body.classList.replace("bg-black", "bg-light");
+                    document.body.classList.replace("text-light", "text-dark");
+                    toggleBtn.innerHTML = '<i class="bi bi-sun-fill"></i>';
+                } else {
+                    htmlEl.setAttribute("data-bs-theme", "dark");
+                    document.body.classList.replace("bg-light", "bg-black");
+                    document.body.classList.replace("text-dark", "text-light");
+                    toggleBtn.innerHTML = '<i class="bi bi-moon-fill"></i>';
+                }
+            });
+        </script>
     </body>
 </html>
