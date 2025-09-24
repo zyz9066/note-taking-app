@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Note Taking App</title>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body class="bg-light">
+        <div class="container my-5">
+            <h1 class="text-primary mb-4">Note Taking App</h1>
+
+            <form id="note-form" action="/notes" method="POST" class="mb-4">
+                <div class="mb-3">
+                    <input
+                        type="text"
+                        name="title"
+                        class="form-control"
+                        placeholder="Title"
+                        required
+                    />
+                </div>
+                <div class="mb-3">
+                    <textarea
+                        name="content"
+                        class="form-control"
+                        rows="3"
+                        placeholder="Your note..."
+                        required
+                    ></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Add Note</button>
+            </form>
+
+            <div class="row g-3">
+                <% if (notes.length === 0) { %>
+                <p>No notes yet.</p>
+                <% } else { %> <% notes.forEach(note => { %>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= note.title %></h5>
+                            <p class="card-text"><%= note.content %></p>
+                            <form
+                                action="/notes/<%= note._id %>?_method=DELETE"
+                                method="POST"
+                            >
+                                <button class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <% }) %> <% } %>
+            </div>
+        </div>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
