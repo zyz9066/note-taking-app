@@ -6,8 +6,8 @@ exports.getNotes = async (req, res) => {
     const userId = req.oidc.user.sub;
     const notes = await Note.find({ user: userId });
     res.render('index', { notes });
-  } catch {
-    res.status(500).send('Error loading notes');
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -16,10 +16,10 @@ exports.getNoteById = async (req, res) => {
   try {
     const userId = req.oidc.user.sub;
     const note = await Note.findOne({ _id: req.params.id, user: userId });
-    if (!note) return res.status(404).send('Note not found');
+    if (!note) return res.status(404).json({ message: 'Note not found' });
     res.render('edit', { note });
-  } catch {
-    res.status(500).send('Error loading note');
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -29,12 +29,14 @@ exports.addNote = async (req, res) => {
     const userId = req.oidc.user.sub;
     const { title, content } = req.body;
     if (!title || !content) {
-      return res.status(400).send('Title and content are required');
+      return res
+        .status(400)
+        .json({ message: 'Title and content are required' });
     }
     await new Note({ user: userId, title, content }).save();
     res.redirect('/');
-  } catch {
-    res.status(500).send('Error creating note');
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -48,10 +50,10 @@ exports.updateNote = async (req, res) => {
       { title, content },
       { new: true, runValidators: true }
     );
-    if (!note) return res.status(404).send('Note not found');
+    if (!note) return res.status(404).json({ message: 'Note not found' });
     res.redirect('/');
-  } catch {
-    res.status(500).send('Error updating note');
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -61,8 +63,8 @@ exports.deleteNote = async (req, res) => {
     const userId = req.oidc.user.sub;
     await Note.deleteOne({ _id: req.params.id, user: userId });
     res.redirect('/');
-  } catch {
-    res.status(500).send('Error deleting note');
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -72,8 +74,8 @@ exports.getNotesAPI = async (req, res) => {
     const userId = req.oidc.user.sub;
     const notes = await Note.find({ user: userId });
     res.json(notes);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch notes.' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -84,8 +86,8 @@ exports.getNoteByIdAPI = async (req, res) => {
     const note = await Note.findOne({ _id: req.params.id, user: userId });
     if (!note) return res.status(404).json({ error: 'Note not found.' });
     res.json(note);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to fetch note.' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -100,8 +102,8 @@ exports.addNoteAPI = async (req, res) => {
     const note = new Note({ user: userId, title, content });
     await note.save();
     res.status(201).json(note);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to create note.' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -117,8 +119,8 @@ exports.updateNoteAPI = async (req, res) => {
     );
     if (!note) return res.status(404).json({ error: 'Note not found.' });
     res.json(note);
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to update note.' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -127,9 +129,10 @@ exports.deleteNoteAPI = async (req, res) => {
   try {
     const userId = req.oidc.user.sub;
     const result = await Note.deleteOne({ _id: req.params.id, user: userId });
-    if (result.deletedCount === 0) return res.status(404).json({ error: 'Note not found.' });
+    if (result.deletedCount === 0)
+      return res.status(404).json({ error: 'Note not found.' });
     res.json({ message: 'Note deleted' });
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to delete note.' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

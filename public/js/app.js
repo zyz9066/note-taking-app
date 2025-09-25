@@ -20,26 +20,28 @@ async function loadNotes() {
   const notes = await res.json();
   const notesDiv = document.querySelector('.row.g-3');
   notesDiv.innerHTML = '';
-  notes.forEach(note => {
+  notes.forEach((note) => {
     notesDiv.innerHTML += createNoteCard(note);
   });
 }
 
 // Add note AJAX
-document.getElementById('note-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const title = this.title.value;
-  const content = this.content.value;
-  const res = await fetch('/api/notes', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ title, content })
+document
+  .getElementById('note-form')
+  .addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const title = this.title.value;
+    const content = this.content.value;
+    const res = await fetch('/api/notes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, content }),
+    });
+    if (res.ok) {
+      this.reset();
+      loadNotes();
+    }
   });
-  if (res.ok) {
-    this.reset();
-    loadNotes();
-  }
-});
 
 // Event delegation for edit/delete buttons
 document.querySelector('.row.g-3').addEventListener('click', async (e) => {
@@ -58,42 +60,46 @@ document.querySelector('.row.g-3').addEventListener('click', async (e) => {
       document.querySelector('input[name="title"]').value = note.title;
       document.querySelector('textarea[name="content"]').value = note.content;
       document.getElementById('note-form').setAttribute('data-editing', noteId);
-      document.getElementById('note-form').scrollIntoView({ behavior: 'smooth' });
+      document
+        .getElementById('note-form')
+        .scrollIntoView({ behavior: 'smooth' });
     }
   }
 });
 
 // Enhanced submit to handle edit/update
-document.getElementById('note-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const title = this.title.value;
-  const content = this.content.value;
-  const noteId = this.getAttribute('data-editing');
-  if (noteId) {
-    // Update note
-    const res = await fetch(`/api/notes/${noteId}`, {
-      method: 'PUT',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ title, content })
-    });
-    if (res.ok) {
-      loadNotes();
-      this.reset();
-      this.removeAttribute('data-editing');
+document
+  .getElementById('note-form')
+  .addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const title = this.title.value;
+    const content = this.content.value;
+    const noteId = this.getAttribute('data-editing');
+    if (noteId) {
+      // Update note
+      const res = await fetch(`/api/notes/${noteId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, content }),
+      });
+      if (res.ok) {
+        loadNotes();
+        this.reset();
+        this.removeAttribute('data-editing');
+      }
+    } else {
+      // Add new note
+      const res = await fetch('/api/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, content }),
+      });
+      if (res.ok) {
+        loadNotes();
+        this.reset();
+      }
     }
-  } else {
-    // Add new note
-    const res = await fetch('/api/notes', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ title, content })
-    });
-    if (res.ok) {
-      loadNotes();
-      this.reset();
-    }
-  }
-});
+  });
 
 // Fetch notes on load
 document.addEventListener('DOMContentLoaded', loadNotes);
