@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const ejsMate = require('ejs-mate');
 const { auth, requiresAuth } = require('express-openid-connect');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
@@ -25,6 +26,7 @@ app.use(auth(auth0Config));
 
 // Views
 app.set('view engine', 'ejs');
+app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
 
 // Routes
