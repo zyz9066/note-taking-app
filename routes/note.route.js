@@ -36,7 +36,7 @@ router.use(methodOverride('_method'));
  *       401:
  *         description: Unauthorized
  */
-router.get('/', noteController.getNotes);
+router.get('/notes', noteController.getNotes);
 
 /**
  * @swagger
