@@ -1,0 +1,33 @@
+{
+  "name": "note-taking-app",
+  "version": "1.0.0",
+  "description": "Note Taking Application",
+  "homepage": "https://github.com/zyz9066/note-taking-app#readme",
+  "bugs": {
+    "url": "https://github.com/zyz9066/note-taking-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zyz9066/note-taking-app.git"
+  },
+  "license": "ISC",
+  "author": "Tianye Zhao",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "ejs": "^3.1.10",
+    "ejs-mate": "^4.0.0",
+    "express": "^5.1.0",
+    "express-openid-connect": "^2.19.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.18.2",
+    "nodemon": "^3.1.10",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

@@ -1,0 +1,33 @@
+<% layout('layouts/layout') -%>
+
+<h1 class="text-primary mb-4">Welcome to the Note Taking Application</h1>
+
+<p>You are logged in. Go to <a href="/notes">Your Notes</a>.</p>
+<div class="row">
+  <div class="col-md-6">
+    <h2>Add Note</h2>
+    <form action="/notes" method="POST">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          id="title"
+          name="title"
+          type="text"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="content" class="form-label">Content</label>
+        <textarea
+          id="content"
+          name="content"
+          class="form-control"
+          rows="3"
+          required
+        ></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Note</button>
+    </form>
+  </div>
+</div>

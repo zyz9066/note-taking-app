@@ -1,0 +1,43 @@
+<% layout('layouts/layout') -%>
+
+<h2 class="mb-4">Your Notes</h2>
+
+<form id="note-form" action="/notes" method="POST" class="mb-4">
+  <div class="mb-3">
+    <input
+      type="text"
+      name="title"
+      class="form-control"
+      placeholder="Title"
+      required
+    />
+  </div>
+  <div class="mb-3">
+    <textarea
+      name="content"
+      class="form-control"
+      rows="3"
+      placeholder="Your note..."
+      required
+    ></textarea>
+  </div>
+  <button type="submit" class="btn btn-success">Add Note</button>
+</form>
+
+<div class="row g-3">
+  <% if (notes.length === 0) { %>
+  <p>No notes yet.</p>
+  <% } else { %> <% notes.forEach(note => { %>
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title"><%= note.title %></h5>
+        <p class="card-text"><%= note.content %></p>
+        <form action="/notes/<%= note._id %>?_method=DELETE" method="POST">
+          <button class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <% }) %> <% } %>
+</div>

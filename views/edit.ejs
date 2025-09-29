@@ -1,0 +1,20 @@
+<% layout('layouts/layout') -%>
+<h1 class="mb-4">Edit Note</h1>
+<form action="/notes/<%= note._id %>?_method=PUT" method="POST">
+  <div class="mb-3">
+    <input
+      type="text"
+      name="title"
+      class="form-control"
+      value="<%= note.title %>"
+      required
+    />
+  </div>
+  <div class="mb-3">
+    <textarea name="content" class="form-control" rows="5" required>
+<%= note.content %></textarea
+    >
+  </div>
+  <button type="submit" class="btn btn-primary">Update Note</button>
+  <a href="/" class="btn btn-secondary ms-2">Cancel</a>
+</form>
