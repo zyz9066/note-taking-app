@@ -18,16 +18,16 @@ A secure, full-stack note-taking web application using Node.js, Express, MongoDB
 
 ### Prerequisites
 
-- Node.js (v18+ recommended)
-- MongoDB (local or Atlas cluster)
-- Auth0 account & app (for credentials)
+- Node.js
+- MongoDB
+- Auth0 account
 
 ### Installation
 
 1. Clone the repository:
 
    ```
-   git clone https://your-repo-url.git
+   git clone https://github.com/zyz9066/note-taking-app.git
    cd note-taking-app
    ```
 
@@ -40,21 +40,21 @@ A secure, full-stack note-taking web application using Node.js, Express, MongoDB
 3. Create a `.env` file in the root directory with:
 
    ```
-   PORT=5000
+   PORT=3000
    MONGO_URI=your_mongodb_connection_string
    AUTH0_SECRET=your_auth0_secret
    AUTH0_CLIENT_ID=your_auth0_client_id
    AUTH0_DOMAIN=your-tenant.auth0.com
-   BASE_URL=http://localhost:5000
+   BASE_URL=http://localhost:3000
    ```
 
 4. Start the development server:
 
    ```
-   npm run dev
+   npm run test
    ```
 
-5. Open [http://localhost:5000](http://localhost:5000) in your browser.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
@@ -63,7 +63,7 @@ A secure, full-stack note-taking web application using Node.js, Express, MongoDB
 - Log in using Auth0 to access or manage your personal notes.
 - View, add, edit, or delete notes on `/notes` after logging in.
 - Use the "Logout" button to end your session.
-- Access Swagger API docs at [http://localhost:5000/api-docs](http://localhost:5000/api-docs).
+- Access Swagger API docs at [http://localhost:3000/api-docs](http://localhost:3000/api-docs).
 
 ---
 
@@ -106,19 +106,22 @@ text
 
 ## Documentation
 
-Interactive API docs and "Try it out" available at [http://localhost:5000/api-docs](http://localhost:5000/api-docs) via Swagger UI.
+Interactive API docs and "Try it out" available at [http://localhost:3000/api-docs](http://localhost:3000/api-docs) via Swagger UI.
 
 ---
 
 ## Folder Structure
 
 note-taking-app/
-├── controllers/ # Business logic for notes
-├── models/ # Mongoose data schemas
-├── routes/ # Express route handlers
-├── views/ # EJS templates and layouts
-├── public/ # Static JS (Bootstrap, client logic)
+├── config/
+├── controllers/
+├── models/
+├── public/
+├── routes/
+├── views/
 ├── .env
+├── .gitignore
+├── package-lock.json
 ├── package.json
 ├── README.md
 └── server.js
@@ -137,17 +140,41 @@ text
 
 ---
 
-## Contributing
+## Challenges Encountered
 
-Pull requests and suggestions are welcome! Fork, patch, and send a pull request.
+### Authentication Complexity
 
----
+Integrating Auth0 with Passport.js for secure authentication can be tricky because it requires careful environment setup, correct callback URLs, session configuration, and handling edge cases such as expired tokens or logout flows.
 
-## License
+### API and Front-End Synchronization
 
-MIT License
+Ensuring a smooth flow of data between API endpoints and front-end views is challenging, especially when using client-side JavaScript for asynchronous CRUD operations. Handling errors gracefully and providing instant feedback to users requires thorough implementation and testing.
 
----
+### Database Modeling and User Isolation
+
+Designing Mongoose schemas that associate each note with a unique user and enforcing access control so users don’t access or modify others’ notes is essential. Overlooking these details can lead to security vulnerabilities and data leaks.
+
+### Validation and Error Handling
+
+Server-side data validation is necessary for a robust app, but distinguishing between different error types (validation, authentication, server) and sending meaningful messages to the front end adds complexity to the codebase.
+
+## Key Takeaways and Lessons Learned
+
+### Importance of Structure and Modularity
+
+Breaking the app into routes, controllers, models, and middleware makes the codebase much easier to navigate, debug, and extend. Proper modularity also enables better team collaboration.
+
+### Critical Role of Environment Variables
+
+Using environment variables for configuration (database URI, Auth0 client info, session secrets) is vital for security and deployment flexibility.
+
+### The Value of Robust Testing
+
+Comprehensive manual and automated testing helps uncover edge cases such as invalid input, unauthorized access, or data integrity issues. This is especially important when handling authentication and user-specific data.
+
+### The Necessity of Clear Documentation
+
+Detailed README instructions and API docs are essential for onboarding new contributors and for personal reference when revisiting a project after some time
 
 ## Author
 
